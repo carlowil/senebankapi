@@ -31,7 +31,7 @@ public class UserController {
         return service.getUserById(id);
     }
 
-    @GetMapping("/user/{email}")
+    @GetMapping("/userByEmail/{email}")
     public User findUserByEmail(@PathVariable String email) {
         return service.getUserByEmail(email);
     }
