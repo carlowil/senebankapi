@@ -15,14 +15,14 @@ public class Transaction {
     @Id
     @GeneratedValue
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "account_from_id")
-    private Account account_from;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "accountFromId")
+    private Account accountFrom;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "userId")
     private User user;
     private int payload;
-    @ManyToOne
-    @JoinColumn(name = "account_to_id")
-    private Account account_to;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "accountToId")
+    private Account accountTo;
 }

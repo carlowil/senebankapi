@@ -7,9 +7,7 @@ import com.carlowil.senebankapi.service.AccountService;
 import com.carlowil.senebankapi.service.TransactionService;
 import com.carlowil.senebankapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,17 +31,20 @@ public class AdminController {
 
     @GetMapping("/transactionsByAccountFromId/{account_from_id}")
     public List<Transaction> findTransactionsByAccountFromId(@PathVariable Integer account_from_id) {
-        return serviceTransaction.getTransactionsByAccountFromId(account_from_id);
+        Account account = serviceAccount.getAccountById(account_from_id);
+        return serviceTransaction.getTransactionsByAccountFrom(account);
     }
 
     @GetMapping("/transactionsByAccountToId/{account_to_id}")
     public List<Transaction> findTransactionsByAccountToId(@PathVariable Integer account_to_id) {
-        return serviceTransaction.getTransactionsByAccountToId(account_to_id);
+        Account account = serviceAccount.getAccountById(account_to_id);
+        return serviceTransaction.getTransactionsByAccountTo(account);
     }
 
     @GetMapping("/transactionsByUserId/{user_id}")
     public List<Transaction> findTransactionsByUserId(@PathVariable Integer user_id) {
-        return serviceTransaction.getTransactionsByUserId(user_id);
+        User user = serviceUser.getUserById(user_id);
+        return serviceTransaction.getTransactionsByUser(user);
     }
 
     @GetMapping("/accounts")
@@ -54,6 +55,11 @@ public class AdminController {
     @GetMapping("/users")
     public List<User> findAllUsers() {
         return serviceUser.getUsers();
+    }
+
+    @PutMapping("/updateAccount")
+    public Account updateAccount(@RequestBody Account account) {
+        return serviceAccount.updateAccount(account);
     }
 
     @GetMapping("/userById/{id}")

@@ -17,8 +17,8 @@ public class TransactionController {
     private AccountService serviceAccount;
     @PostMapping("/addTransaction")
     public Transaction addTransaction(@RequestBody Transaction transaction) {
-        Account accountFrom = transaction.getAccount_from();
-        Account accountTo = transaction.getAccount_to();
+        Account accountFrom = serviceAccount.getAccountById(transaction.getAccountFrom().getId());
+        Account accountTo = serviceAccount.getAccountById(transaction.getAccountTo().getId());
         accountFrom.setBalance(accountFrom.getBalance() - transaction.getPayload());
         accountTo.setBalance(accountTo.getBalance() + transaction.getPayload());
         serviceAccount.updateAccount(accountFrom);
@@ -29,8 +29,8 @@ public class TransactionController {
     @PostMapping("/addTransactions")
     public List<Transaction> addTransactions(@RequestBody List<Transaction> transactions) {
         for (Transaction transaction : transactions) {
-            Account accountFrom = transaction.getAccount_from();
-            Account accountTo = transaction.getAccount_to();
+            Account accountFrom = transaction.getAccountFrom();
+            Account accountTo = transaction.getAccountTo();
             int payload = transaction.getPayload();
             accountFrom.setBalance(accountFrom.getBalance() - payload);
             accountTo.setBalance(accountTo.getBalance() + payload);

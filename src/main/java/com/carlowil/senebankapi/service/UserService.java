@@ -3,6 +3,8 @@ package com.carlowil.senebankapi.service;
 import com.carlowil.senebankapi.entity.User;
 import com.carlowil.senebankapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +17,15 @@ public class UserService {
         return repository.save(user);
     }
 
-    public List<User> saveUsers(List<User> Users) {
-        return repository.saveAll(Users);
+    public User createUser(User user) {
+        if(repository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("Пользователь с таким именем уже существует");
+        }
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Пользователь с таким email уже существует");
+        }
+
+        return saveUser(user);
     }
 
     public List<User> getUsers() {
@@ -31,6 +40,19 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
+    public User getUserByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
+    public UserDetailsService userDetailsService() {
+        return this::getUserByUsername;
+    }
+
+    public User getCurrentUser() {
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getUserByUsername(username);
+    }
+
     public String deleteUser(int id) {
         repository.deleteById(id);
         return "User deleted " + id + "!";
@@ -39,6 +61,7 @@ public class UserService {
     public User updateUser(User user) {
         User existingUser = repository.findById(user.getId()).orElse(null);
         assert existingUser != null;
+        existingUser.setUsername(user.getUsername());
         existingUser.setEmail(user.getEmail());
         existingUser.setDate(user.getDate());
         existingUser.setRole(user.getRole());

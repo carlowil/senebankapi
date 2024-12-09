@@ -1,6 +1,8 @@
 package com.carlowil.senebankapi.service;
 
+import com.carlowil.senebankapi.entity.Account;
 import com.carlowil.senebankapi.entity.Transaction;
+import com.carlowil.senebankapi.entity.User;
 import com.carlowil.senebankapi.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,16 +35,16 @@ public class TransactionService {
         return "Transaction deleted " + id + "!";
     }
 
-    public List<Transaction> getTransactionsByUserId(Integer user_id) {
-        return repository.findByUserId(user_id);
+    public List<Transaction> getTransactionsByUser(User user) {
+        return repository.findByUser(user);
     }
 
-    public List<Transaction> getTransactionsByAccountFromId(Integer account_from_id) {
-        return repository.findByAccountFromId(account_from_id);
+    public List<Transaction> getTransactionsByAccountFrom(Account account) {
+        return repository.findByAccountFrom(account);
     }
 
-    public List<Transaction> getTransactionsByAccountToId(Integer account_to_id) {
-        return repository.findByAccountToId(account_to_id);
+    public List<Transaction> getTransactionsByAccountTo(Account account) {
+        return repository.findByAccountTo(account);
     }
 
     public Transaction updateTransaction(Transaction transaction) {
@@ -50,8 +52,8 @@ public class TransactionService {
         assert existingTransaction != null;
         existingTransaction.setPayload(transaction.getPayload());
         existingTransaction.setUser(transaction.getUser());
-        existingTransaction.setAccount_from(transaction.getAccount_from());
-        existingTransaction.setAccount_to(transaction.getAccount_to());
+        existingTransaction.setAccountFrom(transaction.getAccountFrom());
+        existingTransaction.setAccountTo(transaction.getAccountTo());
         return repository.save(existingTransaction);
     }
 }

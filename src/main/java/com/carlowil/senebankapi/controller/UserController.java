@@ -11,7 +11,7 @@ public class UserController {
     private UserService service;
     @PostMapping("/addUser")
     public User addUser(@RequestBody User user) {
-        return service.saveUser(user);
+        return service.createUser(user);
     }
 
     @GetMapping("/authorizeUser")

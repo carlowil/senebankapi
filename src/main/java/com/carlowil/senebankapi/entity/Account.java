@@ -15,9 +15,10 @@ public class Account {
     @Id
     @GeneratedValue
     private int id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "userId")
     private User user;
     private int balance;
-    private boolean is_overdraft;
+    @JoinColumn(name = "isOverdraft")
+    private boolean isOverdraft;
 }
