@@ -49,9 +49,9 @@ public class TransactionService {
         Transaction existingTransaction = repository.findById(transaction.getId()).orElse(null);
         assert existingTransaction != null;
         existingTransaction.setPayload(transaction.getPayload());
-        existingTransaction.setUser_id(transaction.getPayload());
-        existingTransaction.setAccount_from_id(transaction.getAccount_from_id());
-        existingTransaction.setAccount_to_id(transaction.getAccount_to_id());
+        existingTransaction.setUser(transaction.getUser());
+        existingTransaction.setAccount_from(transaction.getAccount_from());
+        existingTransaction.setAccount_to(transaction.getAccount_to());
         return repository.save(existingTransaction);
     }
 }

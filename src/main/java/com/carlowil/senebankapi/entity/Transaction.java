@@ -16,10 +16,13 @@ public class Transaction {
     @GeneratedValue
     private int id;
     @ManyToOne
-    private int account_from_id;
+    @JoinColumn(name = "account_from_id")
+    private Account account_from;
     @ManyToOne(cascade = CascadeType.ALL)
-    private int user_id;
+    @JoinColumn(name = "user_id")
+    private User user;
     private int payload;
     @ManyToOne
-    private int account_to_id;
+    @JoinColumn(name = "account_to_id")
+    private Account account_to;
 }

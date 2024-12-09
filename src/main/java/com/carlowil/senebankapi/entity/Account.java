@@ -16,7 +16,8 @@ public class Account {
     @GeneratedValue
     private int id;
     @ManyToOne(cascade = CascadeType.ALL)
-    private int user_id;
+    @JoinColumn(name = "user_id")
+    private User user;
     private int balance;
     private boolean is_overdraft;
 }

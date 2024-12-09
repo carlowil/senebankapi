@@ -42,7 +42,7 @@ public class AccountService {
         assert existingAccount != null;
         existingAccount.setBalance(account.getBalance());
         existingAccount.set_overdraft(account.is_overdraft());
-        existingAccount.setUser_id(account.getUser_id());
+        existingAccount.setUser(account.getUser());
         return repository.save(existingAccount);
     }
 }

@@ -21,11 +21,6 @@ public class AccountController {
         return service.saveAccounts(accounts);
     }
 
-    @GetMapping("/accounts")
-    public List<Account> findAllAccounts() {
-        return service.getAccounts();
-    }
-
     @GetMapping("/accountById/{id}")
     public Account findAccountById(@PathVariable int id) {
         return service.getAccountById(id);
@@ -36,12 +31,12 @@ public class AccountController {
         return service.getAccountsByUserId(user_id);
     }
 
-    @PutMapping("/update")
-    public Account updateAccount(@RequestBody Account account) {
-        return service.updateAccount(account);
-    }
+//    @PutMapping("/updateAccount")
+//    public Account updateAccount(@RequestBody Account account) {
+//        return service.updateAccount(account);
+//    }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/deleteAccount/{id}")
     public String deleteAccount(@PathVariable int id) {
         return service.deleteAccount(id);
     }
