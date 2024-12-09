@@ -15,11 +15,11 @@ public class Transaction {
     @Id
     @GeneratedValue
     private int id;
-    @OneToMany
+    @ManyToOne
     private int account_from_id;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.ALL)
     private int user_id;
     private int payload;
-    @OneToMany
+    @ManyToOne
     private int account_to_id;
 }

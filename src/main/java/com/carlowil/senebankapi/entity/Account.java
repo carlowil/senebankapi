@@ -15,7 +15,7 @@ public class Account {
     @Id
     @GeneratedValue
     private int id;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.ALL)
     private int user_id;
     private int balance;
     private boolean is_overdraft;
