@@ -7,6 +7,7 @@ import com.carlowil.senebankapi.service.AccountService;
 import com.carlowil.senebankapi.service.TransactionService;
 import com.carlowil.senebankapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,55 +20,71 @@ public class AdminController {
     private AccountService serviceAccount;
     @Autowired
     private UserService serviceUser;
-    @GetMapping("/transactions")
+    @GetMapping("/admin/transactions")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Transaction> findAllTransactions() {
         return serviceTransaction.getTransactions();
     }
 
-    @GetMapping("/transactionById/{id}")
+    @GetMapping("/admin/transactionById/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Transaction findTransactionById(@PathVariable int id) {
         return serviceTransaction.getTransactionById(id);
     }
 
-    @GetMapping("/transactionsByAccountFromId/{account_from_id}")
+    @GetMapping("/admin/transactionsByAccountFromId/{account_from_id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Transaction> findTransactionsByAccountFromId(@PathVariable Integer account_from_id) {
         Account account = serviceAccount.getAccountById(account_from_id);
         return serviceTransaction.getTransactionsByAccountFrom(account);
     }
 
-    @GetMapping("/transactionsByAccountToId/{account_to_id}")
+    @GetMapping("/admin/transactionsByAccountToId/{account_to_id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Transaction> findTransactionsByAccountToId(@PathVariable Integer account_to_id) {
         Account account = serviceAccount.getAccountById(account_to_id);
         return serviceTransaction.getTransactionsByAccountTo(account);
     }
 
-    @GetMapping("/transactionsByUserId/{user_id}")
+    @GetMapping("/admin/transactionsByUserId/{user_id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Transaction> findTransactionsByUserId(@PathVariable Integer user_id) {
         User user = serviceUser.getUserById(user_id);
         return serviceTransaction.getTransactionsByUser(user);
     }
 
-    @GetMapping("/accounts")
+    @GetMapping("/admin/accounts")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Account> findAllAccounts() {
         return serviceAccount.getAccounts();
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> findAllUsers() {
         return serviceUser.getUsers();
     }
 
-    @PutMapping("/updateAccount")
+    @PutMapping("/admin/updateAccount")
+    @PreAuthorize("hasRole('ADMIN')")
     public Account updateAccount(@RequestBody Account account) {
         return serviceAccount.updateAccount(account);
     }
 
-    @GetMapping("/userById/{id}")
+    @GetMapping("/admin/userById/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public User findUserById(@PathVariable int id) {
         return serviceUser.getUserById(id);
     }
 
-    @GetMapping("/userByEmail/{email}")
+    @PostMapping("/admin/addUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    public User addUser(@RequestBody User user) {
+        return serviceUser.createUser(user);
+    }
+
+    @GetMapping("/admin/userByEmail/{email}")
+    @PreAuthorize("hasRole('ADMIN')")
     public User findUserByEmail(@PathVariable String email) {
         return serviceUser.getUserByEmail(email);
     }

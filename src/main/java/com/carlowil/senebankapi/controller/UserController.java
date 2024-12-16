@@ -1,27 +1,29 @@
 package com.carlowil.senebankapi.controller;
 
+import com.carlowil.senebankapi.dto.JwtAuthenticationResponse;
+import com.carlowil.senebankapi.dto.SignInRequest;
+import com.carlowil.senebankapi.dto.SignUpRequest;
 import com.carlowil.senebankapi.entity.User;
+import com.carlowil.senebankapi.service.AuthenticationService;
 import com.carlowil.senebankapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService service;
-    @PostMapping("/addUser")
-    public User addUser(@RequestBody User user) {
-        return service.createUser(user);
-    }
+    @Autowired
+    private AuthenticationService authServ;
 
-    @GetMapping("/authorizeUser")
-    public String authorizeUser(@RequestBody User user) {
-        return "TODO";
+    @GetMapping("/auth/authorizeUser")
+    public JwtAuthenticationResponse authorizeUser(@RequestBody SignInRequest request) {
+        return authServ.signIn(request);
     }
-
-    @GetMapping("/unauthorizeUser")
-    public String unauthorizeUser(@RequestBody User user) {
-        return "TODO";
+    @GetMapping("/auth/registerUser")
+    public JwtAuthenticationResponse registerUser(@RequestBody SignUpRequest request) {
+        return authServ.signUp(request);
     }
 
 //    @PutMapping("/updateUser")
