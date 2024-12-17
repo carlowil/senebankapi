@@ -67,7 +67,7 @@ public class AdminController {
 
     @PutMapping("/admin/updateAccount")
     @PreAuthorize("hasRole('ADMIN')")
-    public Account updateAccount(@RequestBody Account account) {
+    public String updateAccount(@RequestBody Account account) {
         return serviceAccount.updateAccount(account);
     }
 

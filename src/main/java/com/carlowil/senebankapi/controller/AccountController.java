@@ -1,6 +1,10 @@
 package com.carlowil.senebankapi.controller;
 
+import com.carlowil.senebankapi.dto.CreateAccountRequest;
+import com.carlowil.senebankapi.dto.CreateAccountResponse;
+import com.carlowil.senebankapi.dto.TransactionResponse;
 import com.carlowil.senebankapi.entity.Account;
+import com.carlowil.senebankapi.entity.Transaction;
 import com.carlowil.senebankapi.entity.User;
 import com.carlowil.senebankapi.service.AccountService;
 import com.carlowil.senebankapi.service.UserService;
@@ -16,13 +20,29 @@ public class AccountController {
     @Autowired
     private UserService serviceUser;
     @PostMapping("/addAccount")
-    public String addAccount(@RequestBody Account account) {
-        return serviceAccount.saveAccount(account);
+    public CreateAccountResponse addAccount(@RequestBody CreateAccountRequest account) {
+        User thisUser = serviceUser.getUserById(account.getUserId());
+        Account thisAccount = Account.builder()
+                .isOverdraft(account.getIsOverdraft())
+                .balance(account.getBalance())
+                .user(thisUser)
+                .build();
+        return CreateAccountResponse.builder().message(serviceAccount.saveAccount(thisAccount)).build();
     }
 
     @PostMapping("/addAccounts")
-    public String addAccounts(@RequestBody List<Account> accounts) {
-        return serviceAccount.saveAccounts(accounts);
+    public CreateAccountResponse addAccounts(@RequestBody List<CreateAccountRequest> accounts) {
+        List<Account> listAccounts = new java.util.ArrayList<>(List.of());
+        for(CreateAccountRequest account : accounts) {
+            User thisUser = serviceUser.getUserById(account.getUserId());
+            Account thisAccount = Account.builder()
+                    .isOverdraft(account.getIsOverdraft())
+                    .balance(account.getBalance())
+                    .user(thisUser)
+                    .build();
+            listAccounts.add(thisAccount);
+        }
+        return CreateAccountResponse.builder().message(serviceAccount.saveAccounts(listAccounts)).build();
     }
 
     @GetMapping("/accountById/{id}")

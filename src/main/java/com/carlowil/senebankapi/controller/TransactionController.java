@@ -43,28 +43,27 @@ public class TransactionController {
     }
 
     @PostMapping("/addTransactions")
-    public List<TransactionResponse> addTransactions(@RequestBody List<TransactionRequest> transactions) {
-        List<TransactionResponse> listResponse = new java.util.ArrayList<>(List.of());
+    public TransactionResponse addTransactions(@RequestBody List<TransactionRequest> transactions) {
+        List<Transaction> listTransactions = new java.util.ArrayList<>(List.of());
         for (TransactionRequest transaction : transactions) {
             Account accountFrom = serviceAccount.getAccountById(transaction.getAccountFromId());
             Account accountTo = serviceAccount.getAccountById(transaction.getAccountToId());
-            if (!(accountFrom.getBalance() >= transaction.getPayload())) {
-                listResponse.add(TransactionResponse.builder().message(String.format("Not enough money on account: %d", transaction.getAccountFromId())).build());
+            if (accountFrom.getBalance() >= transaction.getPayload()) {
+                User thisUser = serviceUser.getUserById(transaction.getUserId());
+                accountFrom.setBalance(accountFrom.getBalance() - transaction.getPayload());
+                accountTo.setBalance(accountTo.getBalance() + transaction.getPayload());
+                serviceAccount.updateAccount(accountFrom);
+                serviceAccount.updateAccount(accountTo);
+                Transaction realTransaction = Transaction.builder()
+                        .user(thisUser)
+                        .accountFrom(accountFrom)
+                        .accountTo(accountTo)
+                        .payload(transaction.getPayload())
+                        .build();
+                listTransactions.add(realTransaction);
             }
-            User thisUser = serviceUser.getUserById(transaction.getUserId());
-            accountFrom.setBalance(accountFrom.getBalance() - transaction.getPayload());
-            accountTo.setBalance(accountTo.getBalance() + transaction.getPayload());
-            serviceAccount.updateAccount(accountFrom);
-            serviceAccount.updateAccount(accountTo);
-            Transaction realTransaction = Transaction.builder()
-                    .user(thisUser)
-                    .accountFrom(accountFrom)
-                    .accountTo(accountTo)
-                    .payload(transaction.getPayload())
-                    .build();
-            listResponse.add(TransactionResponse.builder().message(serviceTransaction.saveTransaction(realTransaction)).build());
         }
-        return listResponse;
+        return TransactionResponse.builder().message(serviceTransaction.saveTransactions(listTransactions)).build();
     }
 
 //    @PutMapping("/updateTransaction")

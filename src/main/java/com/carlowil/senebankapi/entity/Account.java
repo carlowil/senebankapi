@@ -2,11 +2,11 @@ package com.carlowil.senebankapi.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

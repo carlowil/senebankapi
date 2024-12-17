@@ -19,8 +19,9 @@ public class TransactionService {
         return String.format("Transaction finished! Transaction id - %d", transaction.getId());
     }
 
-    public List<Transaction> saveTransactions(List<Transaction> transactions) {
-        return repository.saveAll(transactions);
+    public String saveTransactions(List<Transaction> transactions) {
+        repository.saveAll(transactions);
+        return "Transactions id: " + transactions.stream().map(Transaction::getId).toString() + "created !";
     }
 
     public List<Transaction> getTransactions() {
@@ -48,13 +49,14 @@ public class TransactionService {
         return repository.findByAccountTo(account);
     }
 
-    public Transaction updateTransaction(Transaction transaction) {
+    public String updateTransaction(Transaction transaction) {
         Transaction existingTransaction = repository.findById(transaction.getId()).orElse(null);
         assert existingTransaction != null;
         existingTransaction.setPayload(transaction.getPayload());
         existingTransaction.setUser(transaction.getUser());
         existingTransaction.setAccountFrom(transaction.getAccountFrom());
         existingTransaction.setAccountTo(transaction.getAccountTo());
-        return repository.save(existingTransaction);
+        repository.save(existingTransaction);
+        return String.format("Transaction id: %d updated", transaction.getId());
     }
 }
