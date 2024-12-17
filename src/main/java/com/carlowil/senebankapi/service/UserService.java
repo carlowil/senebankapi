@@ -69,10 +69,10 @@ public class UserService {
         return repository.save(existingUser);
     }
 
-    @Deprecated
-    public void getAdmin() {
-        var user = getCurrentUser();
-        user.setRole(Role.ROLE_ADMIN);
-        repository.save(user);
-    }
+//    @Deprecated
+//    public void getAdmin() {
+//        var user = getCurrentUser();
+//        user.setRole(Role.ROLE_ADMIN);
+//        repository.save(user);
+//    }
 }

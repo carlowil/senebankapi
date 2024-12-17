@@ -26,10 +26,10 @@ public class AdminController {
         return serviceTransaction.getTransactions();
     }
 
-    @GetMapping("/get-admin")
-    public void getAdmin() {
-        serviceUser.getAdmin();
-    }
+//    @GetMapping("/get-admin")
+//    public void getAdmin() {
+//        serviceUser.getAdmin();
+//    }
 
     @GetMapping("/admin/transactionById/{id}")
     @PreAuthorize("hasRole('ADMIN')")
