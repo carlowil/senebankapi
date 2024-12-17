@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
+import com.carlowil.senebankapi.entity.Role;
 import java.util.List;
 
 @Service
@@ -67,5 +67,12 @@ public class UserService {
         existingUser.setRole(user.getRole());
         existingUser.setPassword(user.getPassword());
         return repository.save(existingUser);
+    }
+
+    @Deprecated
+    public void getAdmin() {
+        var user = getCurrentUser();
+        user.setRole(Role.ROLE_ADMIN);
+        repository.save(user);
     }
 }
