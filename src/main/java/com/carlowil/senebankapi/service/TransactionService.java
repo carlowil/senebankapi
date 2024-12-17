@@ -14,8 +14,9 @@ public class TransactionService {
     @Autowired
     private TransactionRepository repository;
 
-    public Transaction saveTransaction(Transaction transaction) {
-        return repository.save(transaction);
+    public String saveTransaction(Transaction transaction) {
+        repository.save(transaction);
+        return String.format("Transaction finished! Transaction id - %d", transaction.getId());
     }
 
     public List<Transaction> saveTransactions(List<Transaction> transactions) {

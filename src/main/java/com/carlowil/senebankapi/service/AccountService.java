@@ -13,12 +13,14 @@ public class AccountService {
     @Autowired
     private AccountRepository repository;
 
-    public Account saveAccount(Account account) {
-        return repository.save(account);
+    public String saveAccount(Account account) {
+        repository.save(account);
+        return String.format("Account id: %d created !", account.getId());
     }
 
-    public List<Account> saveAccounts(List<Account> accounts) {
-        return repository.saveAll(accounts);
+    public String saveAccounts(List<Account> accounts) {
+        repository.saveAll(accounts);
+        return "Accounts id: " + accounts.stream().map(Account::getId).toString() + "created !";
     }
 
     public List<Account> getAccounts() {
@@ -38,13 +40,14 @@ public class AccountService {
         return repository.findByUser(user);
     }
 
-    public Account updateAccount(Account account) {
+    public String updateAccount(Account account) {
         Account existingAccount = repository.findById(account.getId()).orElse(null);
         assert existingAccount != null;
         existingAccount.setBalance(account.getBalance());
         existingAccount.setOverdraft(account.isOverdraft());
         existingAccount.setUser(account.getUser());
-        return repository.save(existingAccount);
+        repository.save(existingAccount);
+        return String.format("Account id: %d updated!", account.getId());
     }
 }
 

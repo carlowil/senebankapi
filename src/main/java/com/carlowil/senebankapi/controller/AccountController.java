@@ -16,12 +16,12 @@ public class AccountController {
     @Autowired
     private UserService serviceUser;
     @PostMapping("/addAccount")
-    public Account addAccount(@RequestBody Account account) {
+    public String addAccount(@RequestBody Account account) {
         return serviceAccount.saveAccount(account);
     }
 
     @PostMapping("/addAccounts")
-    public List<Account> addAccounts(@RequestBody List<Account> accounts) {
+    public String addAccounts(@RequestBody List<Account> accounts) {
         return serviceAccount.saveAccounts(accounts);
     }
 
